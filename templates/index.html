@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block title %}BranchLogic | Your #1 Platform for Career Opportunities{% endblock %}
+
+{% block content %}
+<header class="hero-section-internshala">
+    <div class="container hero-content-container">
+        <div class="row align-items-center h-100">
+            <div class="col-lg-6 hero-text-area">
+                <h1 class="display-4 fw-bold text-white mb-2 brand-headline">India's #1 platform</h1>
+                <p class="lead text-white-50 mb-4 sub-headline">For fresher jobs, internships and courses</p>
+                <div class="d-grid gap-3 d-sm-flex">
+                    <a href="#" class="btn btn-light btn-lg px-4 gap-3 btn-google-custom">
+                        <i class="fab fa-google me-2"></i> Continue with Google
+                    </a>
+                    <a href="{{ url_for('signup') }}" class="btn btn-outline-light btn-lg px-4 btn-email-custom">
+                        <i class="fas fa-envelope me-2"></i> Continue with Email
+                    </a>
+                </div>
+                <p class="text-white-50 mt-3 terms-text"><small>By continuing, you agree to our T&C.</small></p>
+            </div>
+
+            <div class="col-lg-6 d-none d-lg-flex justify-content-end align-items-end hero-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071" alt="Two professionals smiling" class="img-fluid hero-main-image-internshala">
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="logo-slider-container-internshala py-4">
+    <div class="container scroll-intro-text">
+        <p class="count-text">
+            {{ job_count }} <br>
+            <span class="openings-text">Openings available</span>
+        </p>    
+    </div>
+    <div class="logo-slider">
+        <div class="logo-track">
+    <div class="slide"><img src="{{ url_for('static', filename='images/hcl.png') }}" alt="HCL"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/deloitte.png') }}" alt="Deloitte"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/google.png') }}" alt="Google"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/amazon.png') }}" alt="Amazon"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/mphasis.png') }}" alt="Mphasis"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/accenture.png') }}" alt="Accenture"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/ibm.png') }}" alt="IBM"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/qualcomm.png') }}" alt="Qualcomm"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/infosys.png') }}" alt="Infosys"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/cognizant.png') }}" alt="Cognizant"></div>
+
+    <div class="slide"><img src="{{ url_for('static', filename='images/hcl.png') }}" alt="HCL"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/deloitte.png') }}" alt="Deloitte"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/google.png') }}" alt="Google"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/amazon.png') }}" alt="Amazon"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/mphasis.png') }}" alt="Mphasis"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/accenture.png') }}" alt="Accenture"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/ibm.png') }}" alt="IBM"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/qualcomm.png') }}" alt="Qualcomm"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/infosys.png') }}" alt="Infosys"></div>
+    <div class="slide"><img src="{{ url_for('static', filename='images/cognizant.png') }}" alt="Cognizant"></div>
+</div>
+    </div>
+</div>
+
+<main class="container my-5">
+    <section class="mb-5">
+        <h2 class="section-title">Trending now</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="category-card card-1">
+                    <div class="card-body">
+                        <h5 class="card-title">Online Courses with Guaranteed Placement</h5>
+                        <a href="{{ url_for('jobs') }}" class="btn btn-light mt-3">Know More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-card card-2">
+                    <div class="card-body">
+                        <span class="badge bg-warning text-dark mb-2">Final Hours</span>
+                        <h5 class="card-title">Special offer for your college! Get FLAT 80% OFF</h5>
+                        <a href="{{ url_for('jobs') }}" class="btn btn-light mt-3">Know More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="category-card card-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Fall 2026 intake open! Master's in Business Analytics</h5>
+                        <a href="{{ url_for('jobs') }}"class="btn btn-light mt-3">Apply Now <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="section-title">What are you looking for?</h2>
+        <h3 class="section-subtitle">Fresher Jobs</h3>
+        <div class="row g-4">
+            {% for job in featured_jobs %}
+            <div class="col-md-6 col-lg-3">
+                <div class="job-listing-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <h5 class="card-title">{{ job.title }}</h5>
+                            <span class="badge bg-success-soft">Actively hiring</span>
+                        </div>
+                        <p class="company-name">{{ job.company }}</p>
+                        <hr>
+                        <p class="card-text"><i class="fas fa-map-marker-alt text-muted"></i> {{ job.location }}</p>
+                        <p class="card-text"><i class="fas fa-dollar-sign text-muted"></i> {{ job.salary or 'Not Disclosed' }}</p>
+                        <a href="{{ url_for('job_detail', job_id=job.id) }}" class="stretched-link"></a>
+                        <div class="text-end">
+                            <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn btn-outline-primary btn-sm">View details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No featured jobs available at the moment.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="section-title">Popular Jobs</h2>
+        <h3 class="section-subtitle">Fastest way to build your CV</h3>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="course-card">
+                    <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=2069" class="card-img-top" alt="AI Course">
+                    <div class="card-body">
+                        <h5 class="card-title">Artificial Intelligence and Machine Learning</h5>
+                        <p class="card-text text-muted">8 weeks</p>
+                        <p class="card-text"><i class="fas fa-star text-warning"></i> 4.1 | 91,313 learners</p>
+                        <a href="{{ url_for('jobs') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="course-card">
+                    <img src="https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070" class="card-img-top" alt="Web Dev Course">
+                    <div class="card-body">
+                        <h5 class="card-title">Web Development</h5>
+                        <p class="card-text text-muted">8 weeks</p>
+                        <p class="card-text"><i class="fas fa-star text-warning"></i> 4.1 | 73,600 learners</p>
+                        <a href="{{ url_for('jobs') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="course-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070" class="card-img-top" alt="Data Science Course">
+                    <div class="card-body">
+                        <h5 class="card-title">Data Science </h5>
+                        <p class="card-text text-muted">6 months course with LIVE sessions</p>
+                        <p class="card-text"><i class="fas fa-star text-warning"></i> 4.5 | 10,000+ learners</p>
+                        <a href="{{ url_for('jobs') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+             <div class="col-md-6 col-lg-3">
+                <div class="course-card">
+                    <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1974" class="card-img-top" alt="Digital Marketing Course">
+                    <div class="card-body">
+                        <h5 class="card-title">Digital Marketing </h5>
+                        <p class="card-text text-muted">6 months course with LIVE sessions</p>
+                        <p class="card-text"><i class="fas fa-star text-warning"></i> 4.4 | 12,000+ learners</p>
+                        <a href="{{ url_for('jobs') }}" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+
+{% endblock %}

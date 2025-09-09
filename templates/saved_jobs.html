@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Saved Jobs{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar">
+                 <h5 class="mb-3">Welcome, {{ current_user.first_name }}!</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">My Applications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('saved_jobs') }}">Saved Jobs</a>
+                    </li>
+                    ...
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h2>Your Saved Jobs</h2>
+            {% if jobs %}
+            <div class="row g-4">
+                {% for job in jobs %}
+                <div class="col-12">
+                    <div class="card job-card">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="{{ url_for('job_detail', job_id=job.id) }}">{{ job.title }}</a></h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ job.company }}</h6>
+                            <p class="card-text text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ job.location }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="card text-center p-5">
+                <h5>You have no saved jobs.</h5>
+                <p>Click the 'Save Job' button on a job listing to add it here.</p>
+                <a href="{{ url_for('jobs') }}" class="btn btn-primary mt-2">Find Jobs</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}All Site Applications{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2">All Site Applications</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        </a>
+    </div>
+
+    {% if applications %}
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Applicant</th>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Applied On</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications %}
+                        <tr>
+                            <td>{{ app.applicant_name }}</td>
+                            <td>{{ app.job_title }}</td>
+                            <td>{{ app.job.company }}</td>
+                            <td>{{ app.applied_at.strftime('%b %d, %Y') }}</td>
+                            <td><span class="badge bg-primary">{{ app.status|title }}</span></td>
+                            <td>
+                                <a href="{{ url_for('admin_view_application', application_id=app.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info">There are no applications on the site yet.</div>
+    {% endif %}
+</div>
+{% endblock %}

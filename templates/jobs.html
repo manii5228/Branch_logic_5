@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block title %}Find Jobs - BranchLogic{% endblock %}
+
+{% block content %}
+<div class="job-search-wrapper">
+    <div class="container py-5">
+        <div class="row">
+
+            <div class="col-lg-4">
+                <div class="filter-sidebar">
+                    <h5 class="filter-title"><i class="fas fa-filter me-2"></i>Filters</h5>
+                    <form method="GET" action="{{ url_for('jobs') }}">
+                        <div class="mb-3">
+                            <label for="q" class="form-label fw-bold">Keywords</label>
+                            <input type="text" name="q" id="q" class="form-control" value="{{ search_query or '' }}" placeholder="Job title, company...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="location" class="form-label fw-bold">Location</label>
+                            <input type="text" name="location" id="location" class="form-control" value="{{ location or '' }}" placeholder="City, state...">
+                        </div>
+                        <div class="mb-3">
+                            <label for="category" class="form-label fw-bold">Category</label>
+                            <select name="category" id="category" class="form-select">
+                                <option value="">All Categories</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat }}" {% if category == cat %}selected{% endif %}>{{ cat|title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-4">
+                            <label for="job_type" class="form-label fw-bold">Job Type</label>
+                            <select name="job_type" id="job_type" class="form-select">
+                                <option value="">All Types</option>
+                                <option value="Full-time" {% if job_type == 'Full-time' %}selected{% endif %}>Full-time</option>
+                                <option value="Part-time" {% if job_type == 'Part-time' %}selected{% endif %}>Part-time</option>
+                                <option value="Contract" {% if job_type == 'Contract' %}selected{% endif %}>Contract</option>
+                                <option value="Internship" {% if job_type == 'Internship' %}selected{% endif %}>Internship</option>
+                            </select>
+                        </div>
+
+                        <div class="form-check form-switch mb-4">
+                            <input class="form-check-input" type="checkbox" name="remote" id="remote" value="true" {% if remote %}checked{% endif %}>
+                            <label class="form-check-label" for="remote">
+                                Remote Only
+                            </label>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Apply Filters</button>
+                            <a href="{{ url_for('jobs') }}" class="btn btn-outline-secondary">Clear Filters</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="job-listings">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0">{{ jobs|length }} Jobs Found</h4>
+                        </div>
+
+                    {% if jobs %}
+                        {% for job in jobs %}
+                        <div class="job-list-card position-relative"> 
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <h5 class="job-title">
+                                        <a href="{{ url_for('job_detail', job_id=job.id) }}">{{ job.title }}</a>
+                                    </h5>
+                                    <a href="{{ url_for('job_detail', job_id=job.id) }}" class="stretched-link"></a>
+                                    <p class="company-name">{{ job.company }}</p>
+                                    <div class="job-details">
+                                        <span class="job-detail-item"><i class="fas fa-map-marker-alt"></i> {{ job.location }}</span>
+                                        <span class="job-detail-item"><i class="fas fa-briefcase"></i> {{ job.job_type }}</span>
+                                        <span class="job-detail-item"><i class="fas fa-dollar-sign"></i> {{ job.salary or 'Competitive' }}</span>
+                                    </div>
+                                    <div class="skill-tags mt-2">
+                                        {% if job.tags %}
+                                        {% for tag in job.tags.split(',')|map('trim')|list %}
+                                        <span class="skill-tag">{{ tag }}</span>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-3 text-md-end">
+                <img src="https://logo.clearbit.com/{{ job.company.replace(' ', '').lower() }}.com" alt="{{ job.company }} Logo" class="company-logo" onerror="this.style.display='none'">
+                <p class="posted-date text-muted"><small>Posted {{ job.posted_at.strftime('%d %b, %Y') }}</small>
+</p>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+                    {% else %}
+                        <div class="card p-5 text-center">
+                            <h5>No jobs found matching your criteria.</h5>
+                            <p>Try adjusting your search filters.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

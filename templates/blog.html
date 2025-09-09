@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Career Advice Blog{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1>Career Insights & Advice</h1>
+        <p class="lead">Tips and articles to help you navigate your career path.</p>
+    </div>
+
+    {% if got_job_at_branchlogic %}
+    <div class="alert alert-success text-center p-4 mb-5 shadow-sm" role="alert">
+        <h4 class="alert-heading"><i class="fas fa-star me-2"></i>Congratulations!</h4>
+        <p>We've noticed you recently accepted a position with <strong>BranchLogic</strong>. Welcome to the team! We're thrilled to have you on board.</p>
+        <hr>
+        <p class="mb-0">Your success story inspires others. Would you be interested in sharing your journey with our community?</p>
+    </div>
+    {% endif %}
+
+
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1549923746-c502d488b3ea?q=80&w=2071" class="card-img-top" alt="Interview preparation">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">How to Ace Your Next Virtual Interview in 2025</h5>
+                    <p class="card-text">Virtual interviews are the new norm. Learn the top 5 tips to make a lasting impression through the screen, from setting up your tech to answering tough questions.</p>
+                </div>
+                <div class="card-footer text-muted">
+                    Posted on September 1, 2025
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?q=80&w=2070" class="card-img-top" alt="Resume writing">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">The Ultimate Resume Checklist: What Recruiters Look For</h5>
+                    <p class="card-text">Is your resume getting lost in the pile? Our ultimate checklist covers everything from keywords to formatting, ensuring your resume gets the attention it deserves.</p>
+                </div>
+                 <div class="card-footer text-muted">
+                    Posted on August 28, 2025
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1932" class="card-img-top" alt="Networking">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">Networking for Introverts: Building Connections Authentically</h5>
+                    <p class="card-text">The thought of networking can be daunting. Discover practical strategies for introverts to build meaningful professional relationships without the stress.</p>
+                </div>
+                 <div class="card-footer text-muted">
+                    Posted on August 25, 2025
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock %}

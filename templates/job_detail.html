@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} at {{ job.company }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card p-4">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <h1 class="mb-1">{{ job.title }}</h1>
+                        <h4 class="text-muted fw-normal">{{ job.company }}</h4>
+                        <p class="text-muted"><i class="fas fa-map-marker-alt me-2"></i>{{ job.location }}</p>
+                    </div>
+                    <div>
+                        {% if already_applied %}
+                            <button class="btn btn-success" disabled><i class="fas fa-check-circle me-2"></i>Applied</button>
+                        {% else %}
+                            <a href="{{ url_for('apply_job', job_id=job.id) }}" class="btn btn-primary">Apply Now</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="d-flex flex-wrap gap-2 mb-4">
+                    <span class="badge bg-light text-dark p-2"><i class="fas fa-briefcase me-1"></i> {{ job.job_type }}</span>
+                    <span class="badge bg-light text-dark p-2"><i class="fas fa-dollar-sign me-1"></i> {{ job.salary or 'Not Specified' }}</span>
+                    {% if job.remote %}
+                    <span class="badge bg-info text-white p-2"><i class="fas fa-wifi me-1"></i> Remote</span>
+                    {% endif %}
+                    {% if job.urgent %}
+                    <span class="badge bg-danger text-white p-2"><i class="fas fa-exclamation-circle me-1"></i> Urgent</span>
+                    {% endif %}
+                </div>
+                
+                <h4 class="mb-3">Job Description</h4>
+                <div class="job-description">
+                    {{ job.description|safe }}
+                </div>
+                
+                <h4 class="mt-4 mb-3">Requirements</h4>
+                <div class="job-requirements">
+                    {{ job.requirements|safe }}
+                </div>
+                
+                <h4 class="mt-4 mb-3">Benefits</h4>
+                <div class="job-benefits">
+                    {{ job.benefits|safe }}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card p-4 mb-4">
+                <h5 class="mb-3">Job Summary</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><strong>Posted:</strong> {{ job.posted_at.strftime('%b %d, %Y') }}</li>
+                    <li class="mb-2"><strong>Location:</strong> {{ job.location }}</li>
+                    <li class="mb-2"><strong>Job Type:</strong> {{ job.job_type }}</li>
+                    <li class="mb-2"><strong>Category:</strong> {{ job.category|title }}</li>
+                </ul>
+                <div class="d-grid gap-2">
+                   <form action="{{ url_for('save_job', job_id=job.id) }}" method="POST">
+                        <button type="submit" class="btn btn-outline-secondary w-100"><i class="far fa-bookmark me-2"></i>Save Job</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card p-4">
+                <h5 class="mb-3">Related Jobs</h5>
+                {% for related_job in related_jobs %}
+                <div class="mb-3 border-bottom pb-2">
+                    <h6><a href="{{ url_for('job_detail', job_id=related_job.id) }}" class="text-decoration-none text-dark">{{ related_job.title }}</a></h6>
+                    <p class="text-muted mb-0">{{ related_job.company }}</p>
+                </div>
+                {% else %}
+                <p>No related jobs found.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

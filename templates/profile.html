@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar">
+                 <h5 class="mb-3">Welcome, {{ current_user.first_name }}!</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">My Applications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('saved_jobs') }}">Saved Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('interviews') }}">My Interviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('job_alerts') }}">Job Alerts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('career_insights') }}">Career Insights</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('profile') }}">My Profile</a>
+                    </li>
+                     <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('change_password') }}">Change Password</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h2>Edit Your Profile</h2>
+            <div class="card p-4">
+                <form method="POST" action="{{ url_for('profile') }}">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="first_name" class="form-label">First Name</label>
+                            <input type="text" class="form-control" id="first_name" name="first_name" value="{{ current_user.first_name }}" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="last_name" class="form-label">Last Name</label>
+                            <input type="text" class="form-control" id="last_name" name="last_name" value="{{ current_user.last_name }}" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="bio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Tell us a little about yourself">{{ current_user.bio or '' }}</textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="skills" class="form-label">Skills (comma-separated)</label>
+                            <input type="text" class="form-control" id="skills" name="skills" value="{{ current_user.skills or '' }}" placeholder="e.g., Python, JavaScript, Figma">
+                        </div>
+                        <div class="col-12">
+                            <label for="experience" class="form-label">Experience</label>
+                            <textarea class="form-control" id="experience" name="experience" rows="4" placeholder="Your work experience">{{ current_user.experience or '' }}</textarea>
+                        </div>
+                        <div class="col-12">
+                            <label for="education" class="form-label">Education</label>
+                            <textarea class="form-control" id="education" name="education" rows="3" placeholder="Your education background">{{ current_user.education or '' }}</textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" value="{{ current_user.location or '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="website" class="form-label">Website/Portfolio</label>
+                            <input type="url" class="form-control" id="website" name="website" value="{{ current_user.website or '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="linkedin" class="form-label">LinkedIn Profile</label>
+                            <input type="url" class="form-control" id="linkedin" name="linkedin" value="{{ current_user.linkedin or '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="github" class="form-label">GitHub Profile</label>
+                            <input type="url" class="form-control" id="github" name="github" value="{{ current_user.github or '' }}">
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

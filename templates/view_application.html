@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}Application from {{ application.applicant_name }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <a href="{{ url_for('applications') }}" class="btn btn-outline-secondary mb-3"><i class="fas fa-arrow-left me-2"></i>Back to Applications</a>
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card p-4">
+                <h2>{{ application.applicant_name }}</h2>
+                <p class="text-muted">Applied for: <strong>{{ application.job_title }}</strong> on {{ application.applied_at.strftime('%B %d, %Y') }}</p>
+                <p><i class="fas fa-envelope me-2"></i>{{ application.applicant_email }}</p>
+                
+                {% if application.resume %}
+                    <a href="{{ url_for('uploaded_file', filename=application.resume) }}" class="btn btn-primary my-3" target="_blank"><i class="fas fa-file-download me-2"></i>Download Resume</a>
+                {% endif %}
+
+                <h4 class="mt-4">Cover Letter</h4>
+                <div class="p-3 bg-light rounded">
+                    <p>{{ application.cover_letter or 'No cover letter provided.' }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card p-4">
+                <h5>Update Status</h5>
+                <form method="POST" action="{{ url_for('update_application_status', application_id=application.id) }}">
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select id="status" name="status" class="form-select">
+                            <option value="new" {% if application.status == 'new' %}selected{% endif %}>New</option>
+                            <option value="reviewing" {% if application.status == 'reviewing' %}selected{% endif %}>Reviewing</option>
+                            <option value="shortlisted" {% if application.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                            <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                            <option value="hired" {% if application.status == 'hired' %}selected{% endif %}>Hired</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                         <label for="rating" class="form-label">Rating (1-5)</label>
+                         <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" value="{{ application.rating or '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes for Team</label>
+                        <textarea id="notes" name="notes" class="form-control" rows="4">{{ application.notes or '' }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Update</button>
+                </form>
+                <hr>
+                <a href="{{ url_for('schedule_interview', application_id=application.id) }}" class="btn btn-success w-100"><i class="far fa-calendar-alt me-2"></i>Schedule Interview</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

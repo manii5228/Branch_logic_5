@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block title %}Application Details{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <a href="{{ url_for('admin_all_applications') }}" class="btn btn-outline-secondary mb-3">
+        <i class="fas fa-arrow-left me-2"></i>Back to All Applications
+    </a>
+    
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="card p-4">
+                <h2 class="mb-1">Application for {{ application.job_title }}</h2>
+                <hr>
+                <h4 class="mt-2">Applicant Details</h4>
+                <p><strong>Name:</strong> {{ application.applicant_name }}</p>
+                <p><strong>Email:</strong> {{ application.applicant_email }}</p>
+                
+                {% if application.resume %}
+                    <a href="{{ url_for('uploaded_file', filename=application.resume) }}" class="btn btn-primary my-2" target="_blank">
+                        <i class="fas fa-file-download me-2"></i>Download Resume
+                    </a>
+                {% else %}
+                    <p class="text-muted">No resume uploaded.</p>
+                {% endif %}
+
+                <h4 class="mt-4">Cover Letter</h4>
+                <div class="p-3 bg-light rounded cover-letter-box">
+                    <p>{{ application.cover_letter or 'No cover letter provided.' }}</p>
+                </div>
+                
+                <h4 class="mt-4">Scheduled Interviews</h4>
+                {% if interviews %}
+                    <ul class="list-group">
+                    {% for interview in interviews %}
+                        <li class="list-group-item">
+                            <strong>{{ interview.interview_type|title }} Interview</strong> on 
+                            {{ interview.scheduled_at.strftime('%a, %b %d, %Y at %I:%M %p') }}
+                            <br><small class="text-muted">Status: {{ interview.status|title }}</small>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-muted">No interviews have been scheduled for this applicant yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="actionTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="status-tab" data-bs-toggle="tab" data-bs-target="#status-pane" type="button">Update Status</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="schedule-tab" data-bs-toggle="tab" data-bs-target="#schedule-pane" type="button">Schedule Interview</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="actionTabsContent">
+                        
+                        <div class="tab-pane fade show active" id="status-pane" role="tabpanel">
+                             <form method="POST" action="{{ url_for('admin_view_application', application_id=application.id) }}">
+                                <input type="hidden" name="form_type" value="update_status">
+                                <div class="mb-3">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select id="status" name="status" class="form-select">
+                                        <option value="new" {% if application.status == 'new' %}selected{% endif %}>New</option>
+                                        <option value="reviewing" {% if application.status == 'reviewing' %}selected{% endif %}>Reviewing</option>
+                                        <option value="shortlisted" {% if application.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+                                        <option value="rejected" {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+                                        <option value="hired" {% if application.status == 'hired' %}selected{% endif %}>Hired</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="rating" class="form-label">Rating (1-5)</label>
+                                    <input type="number" name="rating" id="rating" class="form-control" min="1" max="5" value="{{ application.rating or '' }}">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                            </form>
+                        </div>
+
+                        <div class="tab-pane fade" id="schedule-pane" role="tabpanel">
+                             <form method="POST" action="{{ url_for('admin_view_application', application_id=application.id) }}">
+                                <input type="hidden" name="form_type" value="schedule_interview">
+                                <div class="mb-3">
+                                    <label for="scheduled_at" class="form-label">Date and Time</label>
+                                    <input type="datetime-local" class="form-control" id="scheduled_at" name="scheduled_at" required min="{{ min_dt_str }}">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="duration" class="form-label">Duration (minutes)</label>
+                                    <input type="number" class="form-control" id="duration" name="duration" value="60" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="interview_type" class="form-label">Interview Type</label>
+                                    <select class="form-select" id="interview_type" name="interview_type">
+                                        <option value="video" selected>Video</option>
+                                        <option value="phone">Phone</option>
+                                        <option value="onsite">On-site</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="meeting_link" class="form-label">Meeting Link</label>
+                                    <input type="url" class="form-control" id="meeting_link" name="meeting_link" placeholder="https://zoom.us/j/...">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="notes_for_applicant" class="form-label">Notes for Applicant</label>
+                                    <textarea class="form-control" id="notes_for_applicant" name="notes_for_applicant" rows="4"></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-success">Schedule Interview</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .cover-letter-box {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+</style>
+{% endblock %}

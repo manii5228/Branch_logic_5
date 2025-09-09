@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar">
+                <h5 class="mb-3">Manage</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('admin_dashboard') }}">My Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('applications') }}">All Applications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('interviews') }}">Scheduled Interviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{ url_for('analytics') }}">Analytics</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h2>Hiring Analytics</h2>
+            <div class="row g-4 mb-4">
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="stat-number">{{ analytics.total_applications or 0 }}</div>
+                        <div class="stat-label">Total Applications</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="stat-number">{{ analytics.shortlisted_count or 0 }}</div>
+                        <div class="stat-label">Shortlisted</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                     <div class="card dashboard-card">
+                        <div class="stat-number">{{ analytics.hired_count or 0 }}</div>
+                        <div class="stat-label">Hired</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Application Funnel</h5>
+                    <canvas id="applicationFunnelChart"></canvas>
+                </div>
+            </div>
+
+            <h3 class="mt-5">Performance by Job</h3>
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                         <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Total Apps</th>
+                                    <th>Shortlisted</th>
+                                    <th>Hired</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job_stat in analytics.job_stats or [] %}
+                                <tr>
+                                    <td>{{ job_stat.job_title }}</td>
+                                    <td>{{ job_stat.total_applications or 0 }}</td>
+                                    <td>{{ job_stat.shortlisted_count or 0 }}</td>
+                                    <td>{{ job_stat.hired_count or 0 }}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No job data available</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                         </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('applicationFunnelChart').getContext('2d');
+        const applicationFunnelChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Total Applications', 'Shortlisted', 'Interviewed', 'Hired', 'Rejected'],
+                datasets: [{
+                    label: 'Count',
+                    data: [
+                        {{ analytics.total_applications or 0 }},
+                        {{ analytics.shortlisted_count or 0 }},
+                        {{ analytics.interview_count or 0 }},
+                        {{ analytics.hired_count or 0 }},
+                        {{ analytics.rejected_count or 0 }}
+                    ],
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 99, 132, 0.6)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 99, 132, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

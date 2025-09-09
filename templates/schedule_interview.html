@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Schedule Interview{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="form-container" style="max-width: 600px;">
+        <h2>Schedule Interview</h2>
+        <p>For: <strong>{{ application.applicant_name }}</strong> ({{ application.job_title }})</p>
+        <form method="POST" action="{{ url_for('schedule_interview', application_id=application.id) }}">
+            <div class="mb-3">
+                <label for="scheduled_at" class="form-label">Date and Time</label>
+                <input type="datetime-local" class="form-control" id="scheduled_at" name="scheduled_at" required min="{{ min_dt_str }}">
+            </div>
+            <div class="mb-3">
+                <label for="duration" class="form-label">Duration (minutes)</label>
+                <input type="number" class="form-control" id="duration" name="duration" value="60" required>
+            </div>
+            <div class="mb-3">
+                <label for="interview_type" class="form-label">Interview Type</label>
+                <select class="form-select" id="interview_type" name="interview_type">
+                    <option value="video" selected>Video</option>
+                    <option value="phone">Phone</option>
+                    <option value="onsite">On-site</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="meeting_link" class="form-label">Meeting Link (for video/phone)</label>
+                <input type="url" class="form-control" id="meeting_link" name="meeting_link" placeholder="https://zoom.us/j/...">
+            </div>
+             <div class="mb-3">
+                <label for="location" class="form-label">Location (for on-site)</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="e.g., 123 Main St, New York">
+            </div>
+            <div class="mb-4">
+                <label for="notes" class="form-label">Notes for Applicant</label>
+                <textarea class="form-control" id="notes" name="notes" rows="4" placeholder="e.g., Please have your portfolio ready..."></textarea>
+            </div>
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary">Schedule Interview</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

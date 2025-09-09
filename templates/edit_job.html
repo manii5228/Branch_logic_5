@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Job: {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="form-container" style="max-width: 800px;">
+        <h2>Edit Job Posting</h2>
+        <form method="POST" action="{{ url_for('edit_job', job_id=job.id) }}">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label for="title" class="form-label">Job Title</label>
+                    <input type="text" class="form-control" id="title" name="title" value="{{ job.title }}" required>
+                </div>
+                <div class="col-12">
+                    <label for="company" class="form-label">Company Name</label>
+                    <input type="text" class="form-control" id="company" name="company" value="{{ job.company }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" class="form-control" id="location" name="location" value="{{ job.location }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="job_type" class="form-label">Job Type</label>
+                    <select id="job_type" name="job_type" class="form-select" required>
+                        <option value="Full-time" {% if job.job_type == 'Full-time' %}selected{% endif %}>Full-time</option>
+                        <option value="Part-time" {% if job.job_type == 'Part-time' %}selected{% endif %}>Part-time</option>
+                        <option value="Contract" {% if job.job_type == 'Contract' %}selected{% endif %}>Contract</option>
+                        <option value="Internship" {% if job.job_type == 'Internship' %}selected{% endif %}>Internship</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="category" name="category" value="{{ job.category }}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="salary" class="form-label">Salary Range (Optional)</label>
+                    <input type="text" class="form-control" id="salary" name="salary" value="{{ job.salary or '' }}">
+                </div>
+                <div class="col-12">
+                    <label for="description" class="form-label">Job Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="5" required>{{ job.description }}</textarea>
+                </div>
+                <div class="col-12">
+                    <label for="requirements" class="form-label">Requirements</label>
+                    <textarea class="form-control" id="requirements" name="requirements" rows="4" required>{{ job.requirements }}</textarea>
+                </div>
+                <div class="col-12">
+                    <label for="benefits" class="form-label">Benefits</label>
+                    <textarea class="form-control" id="benefits" name="benefits" rows="3">{{ job.benefits or '' }}</textarea>
+                </div>
+                 <div class="col-12">
+                    <label for="tags" class="form-label">Tags (comma-separated)</label>
+                    <input type="text" class="form-control" id="tags" name="tags" value="{{ job.tags or '' }}">
+                </div>
+                <div class="col-12 mt-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Update Job</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

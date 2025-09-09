@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Apply for {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="apply-page-wrapper">
+    <div class="container py-5">
+        <div class="row">
+
+            <div class="col-lg-7 job-details-column">
+                <div class="mb-3">
+                    {% if job.urgent %}
+                        <span class="job-badge urgent-badge">Urgent Hiring</span>
+                    {% endif %}
+                    {% if job.remote %}
+                        <span class="job-badge remote-badge">Remote</span>
+                    {% endif %}
+                </div>
+
+                <h1 class="job-main-title">{{ job.title }}</h1>
+                <h2 class="job-company-subtitle">{{ job.company }}</h2>
+
+                <ul class="benefits-list mt-4">
+                    <li><i class="fas fa-check-circle"></i> <strong>Job Type:</strong> {{ job.job_type }}</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Location:</strong> {{ job.location }}</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Salary:</strong> {{ job.salary or 'Not Disclosed' }}</li>
+                </ul>
+
+                <div class="info-box my-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong>Posted On</strong>
+                            <p>{{ job.posted_at.strftime('%d %b, %Y') }}</p>
+
+                        </div>
+                        <div class="col-md-6">
+                            <strong>Category</strong>
+                            <p>{{ job.category|title }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="company-hiring-section">
+                    <h6>{{ job.company }} is hiring!</h6>
+                    <p>Apply now to be considered for this exciting opportunity.</p>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="apply-card">
+                    <h4 class="mb-4">Interested? Apply Now</h4>
+                    <form method="POST" action="{{ url_for('apply_job', job_id=job.id) }}" enctype="multipart/form-data">
+                        
+                        <div class="mb-3">
+                            <label for="resume" class="form-label">Upload Your Resume*</label>
+                            <input class="form-control" type="file" id="resume" name="resume" required>
+                            <small class="form-text text-muted">PDF, DOC, DOCX files are accepted.</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="drive_link" class="form-label">Google Drive Link</label>
+                            <input type="url" name="drive_link" id="drive_link" class="form-control"placeholder="Paste your Google Drive resume link here">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="cover_letter" class="form-label">Cover Letter</label>
+                            <textarea class="form-control" id="cover_letter" name="cover_letter" rows="6" placeholder="Why are you a good fit for this role?"></textarea>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Submit Application</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="{{ url_for('job_detail', job_id=job.id) }}" class="btn btn-link text-secondary">Cancel</a>
+                        </div>
+                    </form>
+                    <p class="form-footer-text">By continuing, you agree to our T&C.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
